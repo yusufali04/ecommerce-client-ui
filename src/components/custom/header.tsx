@@ -12,7 +12,7 @@ const Header = async () => {
             revalidate: 3600 // cache for 1 hour
         }
     })
-    if (tenantsResponse.ok) {
+    if (!tenantsResponse.ok) {
         throw new Error("Failed to fetch tenants")
     }
     const restaurants: { data: Tenant[] } = await tenantsResponse.json();
