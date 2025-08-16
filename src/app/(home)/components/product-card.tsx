@@ -12,6 +12,7 @@ import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import Image from 'next/image';
 import React from 'react'
+import ToppingList from './topping-list';
 
 export type Product = {
     _id: string;
@@ -125,21 +126,10 @@ const ProductCard = ({ product }: PropType) => {
                                                 Thick
                                             </Label>
                                         </div>
-                                        <div>
-                                            <RadioGroupItem
-                                                aria-label='Large'
-                                                id='large'
-                                                value='large'
-                                                className="peer sr-only"
-                                            />
-                                            <Label
-                                                htmlFor='large'
-                                                className="flex flex-col items-center justify-between rounded-md border-2 bg-white p-3 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary">
-                                                Large
-                                            </Label>
-                                        </div>
                                     </RadioGroup>
                                 </div>
+                                <ToppingList />
+
                             </div>
                         </div>
                     </DialogContent>
