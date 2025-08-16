@@ -1,11 +1,22 @@
-import Image from 'next/image'
 import React from 'react'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select'
 import Link from 'next/link'
 import { Phone, ShoppingBasket } from 'lucide-react'
 import { Button } from '../ui/button'
+import { Tenant } from '@/lib/types'
 
-const Header = () => {
+const Header = async () => {
+    console.log("rendering...");
+    const tenantsResponse = await fetch(`${process.env.BACKEND_URL}/api/auth/tenants?perPage=100`, {
+        next: {
+            revalidate: 3600 // cache for 1 hour
+        }
+    })
+    if (tenantsResponse.ok) {
+        throw new Error("Failed to fetch tenants")
+    }
+    const restaurants: { data: Tenant[] } = await tenantsResponse.json();
+
     return (
         <header className='bg-white'>
             <nav className='container py-5 mx-auto max-w-screen-lg flex items-center justify-between ' style={{ outline: "none" }}>
@@ -19,9 +30,11 @@ const Header = () => {
                             <SelectValue placeholder="Select restaurant" />
                         </SelectTrigger>
                         <SelectContent>
-                            <SelectItem value="cheesy-delight">Cheesy Delight</SelectItem>
-                            <SelectItem value="pizza-hut">Pizza Hut</SelectItem>
-                            <SelectItem value="kids-corner">Kids Corner</SelectItem>
+                            {
+                                restaurants.data.map((restaurant: Tenant) => {
+                                    return <SelectItem key={restaurant.id} value={restaurant.id}>{restaurant.name}</SelectItem>
+                                })
+                            }
                         </SelectContent>
                     </Select>
                 </div>
