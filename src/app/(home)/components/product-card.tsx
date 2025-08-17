@@ -3,9 +3,6 @@ import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
 import {
     Dialog,
     DialogContent,
-    DialogDescription,
-    DialogHeader,
-    DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog"
 import { Label } from '@/components/ui/label';
@@ -14,14 +11,8 @@ import Image from 'next/image';
 import React from 'react'
 import ToppingList from './topping-list';
 import { ShoppingCart } from 'lucide-react';
+import { Product } from '@/lib/types';
 
-export type Product = {
-    _id: string;
-    name: string;
-    description: string;
-    image: string;
-    price: number;
-}
 
 type PropType = {
     product: Product
@@ -40,7 +31,7 @@ const ProductCard = ({ product }: PropType) => {
             <CardFooter className='flex items-center justify-between'>
                 <p>
                     <span className='text-sm'>From </span>
-                    <span className='font-bold text-sm'>₹{product.price}</span>
+                    <span className='font-bold text-sm'>₹{100}</span>
                 </p>
                 <Dialog>
                     <DialogTrigger className='bg-orange-200 hover:bg-orange-300 text-orange-500 px-6 py-2 rounded-full shadow hover:shadow-lg outline-none focus:outline-none ease-linear transition-all duration-150 text-xs'>Select</DialogTrigger>

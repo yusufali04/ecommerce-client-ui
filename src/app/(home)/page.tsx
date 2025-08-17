@@ -1,46 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Image from "next/image";
-import ProductCard, { Product } from "./components/product-card";
-import { Category } from "@/lib/types";
-
-const products: Product[] = [
-  {
-    _id: '1',
-    name: 'Margerita Pizza',
-    description: "This is a tasty pizza",
-    price: 500,
-    image: "/pizza-main.png"
-  },
-  {
-    _id: '2',
-    name: 'Margerita Pizza',
-    description: "This is a tasty pizza",
-    price: 500,
-    image: "/pizza-main.png"
-  },
-  {
-    _id: '3',
-    name: 'Margerita Pizza',
-    description: "This is a tasty pizza",
-    price: 500,
-    image: "/pizza-main.png"
-  },
-  {
-    _id: '4',
-    name: 'Margerita Pizza',
-    description: "This is a tasty pizza",
-    price: 500,
-    image: "/pizza-main.png"
-  },
-  {
-    _id: '5',
-    name: 'Margerita Pizza',
-    description: "This is a tasty pizza",
-    price: 500,
-    image: "/pizza-main.png"
-  }
-]
+import ProductCard from "./components/product-card";
+import { Category, Product } from "@/lib/types";
 
 export default async function Home() {
   const categoryResponse = await fetch(`${process.env.BACKEND_URL}/api/catalog/categories`, {
@@ -52,7 +14,13 @@ export default async function Home() {
     throw new Error("Failed to fetch categories")
   }
   const categories: Category[] = await categoryResponse.json();
-  console.log(categories);
+  const productsResponse = await fetch(`${process.env.BACKEND_URL}/api/catalog/products?perPage=100&tenantId=5`, {
+    next: {
+      revalidate: 5 // cache for 1 hour
+    }
+  })
+  const products: { data: Product[] } = await productsResponse.json();
+  console.log(products);
 
   return (
     <>
@@ -77,7 +45,7 @@ export default async function Home() {
       </section>
       <section>
         <div className="container mx-auto max-w-screen-lg py-12">
-          <Tabs defaultValue="pizza" className="">
+          <Tabs defaultValue={categories[0]._id} className="">
             <TabsList>
               {
                 categories.map((category) => {
@@ -86,19 +54,24 @@ export default async function Home() {
               }
 
             </TabsList>
-            <TabsContent value="pizza">
-              <div className="grid grid-cols-4 gap-6 mt-6">
-                {
-                  products.map((product) => (
-                    <ProductCard key={product._id} product={product} />
-                  ))
-                }
-              </div>
-            </TabsContent>
+            {
+              categories.map((category) => {
+                return <TabsContent key={category._id} value={category._id}>
+                  <div className="grid grid-cols-4 gap-6 mt-6">
+                    {
+                      products.data.filter((product) => product.category._id === category._id).map((product) => (
+                        <ProductCard key={product._id} product={product} />
+                      ))
+                    }
+                  </div>
+                </TabsContent>
+              })
+            }
+
             <TabsContent value="beverages">
               <div className="grid grid-cols-4 gap-6 mt-6">
                 {
-                  products.map((product) => (
+                  products.data.map((product: Product) => (
                     <ProductCard key={product._id} product={product} />
                   ))
                 }
