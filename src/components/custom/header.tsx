@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { Phone, ShoppingBasket } from 'lucide-react'
 import { Button } from '../ui/button'
 import { Tenant } from '@/lib/types'
+import CartCounter from './cart-counter'
 
 const Header = async () => {
     console.log("rendering...");
@@ -43,14 +44,7 @@ const Header = async () => {
                         <li className='hover:text-primary'><Link href={"/"}>Menu</Link></li>
                         <li className='hover:text-primary'><Link href={"/"}>Orders</Link></li>
                     </ul>
-                    <div className='relative'>
-                        <Link href={"/cart"}>
-                            <ShoppingBasket className='hover:text-primary' />
-                        </Link>
-                        <span className='absolute -top-4 -right-5 h-6 w-6 flex items-center justify-center rounded-full bg-primary font-bold text-white'>
-                            3
-                        </span>
-                    </div>
+                    <CartCounter />
                     <div className='flex items-center ml-12'>
                         <Phone />
                         <span>+91 9490 625 094</span>
