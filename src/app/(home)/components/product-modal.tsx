@@ -1,5 +1,5 @@
 'use client'
-import React from 'react'
+import React, { Suspense } from 'react'
 import { Button } from '@/components/ui/button';
 import {
     Dialog,
@@ -59,7 +59,10 @@ const ProductModal = ({ product }: { product: Product }) => {
                                 </div>
                             })
                         }
-                        <ToppingList />
+                        <Suspense fallback={"Loading toppings"}>
+                            <ToppingList />
+                        </Suspense>
+
                         <div className='flex items-center justify-between mt-12'>
                             <span className='font-bold'>&#8377;400</span>
                             <Button onClick={handleAddToCart}><ShoppingCart /> <span>Add to cart</span></Button>

@@ -1,9 +1,10 @@
 
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
 import Image from 'next/image';
-import React from 'react'
+import React, { Suspense } from 'react'
 import { Product } from '@/lib/types';
 import ProductModal from './product-modal';
+import { ProductCardSkeleton } from './skeleton';
 
 type PropType = {
     product: Product
