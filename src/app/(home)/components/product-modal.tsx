@@ -1,3 +1,4 @@
+'use client'
 import React from 'react'
 import { Button } from '@/components/ui/button';
 import {
@@ -13,8 +14,10 @@ import Image from 'next/image';
 import { Product } from '@/lib/types';
 
 const ProductModal = ({ product }: { product: Product }) => {
-    console.log("priceConfiguration", product.category.priceConfiguration)
-    console.log("entries", Object.entries(product.category.priceConfiguration))
+    const handleAddToCart = () => {
+        console.log("Adding to cart");
+
+    }
     return (
         <Dialog>
             <DialogTrigger className='bg-orange-200 hover:bg-orange-300 text-orange-500 px-6 py-2 rounded-full shadow hover:shadow-lg outline-none focus:outline-none ease-linear transition-all duration-150 text-xs'>Select</DialogTrigger>
@@ -59,7 +62,7 @@ const ProductModal = ({ product }: { product: Product }) => {
                         <ToppingList />
                         <div className='flex items-center justify-between mt-12'>
                             <span className='font-bold'>&#8377;400</span>
-                            <Button><ShoppingCart /> <span>Add to cart</span></Button>
+                            <Button onClick={handleAddToCart}><ShoppingCart /> <span>Add to cart</span></Button>
                         </div>
                     </div>
                 </div>

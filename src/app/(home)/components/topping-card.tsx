@@ -1,17 +1,10 @@
 'use client';
 import { Button } from '@/components/ui/button';
+import { Topping } from '@/lib/types';
 import { cn } from '@/lib/utils';
 import { CircleCheck } from 'lucide-react';
 import Image from 'next/image';
 import React, { useState } from 'react'
-
-export type Topping = {
-    id: string;
-    name: string;
-    price: number;
-    image: string;
-    isAvailable: boolean;
-}
 
 type PropType = {
     topping: Topping;
@@ -20,7 +13,7 @@ type PropType = {
 }
 const ToppingCard = ({ topping, selectedToppings, handleCheckBoxCheck }: PropType) => {
 
-    const isCurrentSelected = selectedToppings.some((element) => element.id === topping.id);
+    const isCurrentSelected = selectedToppings.some((element) => element._id === topping._id);
     return (
         <Button
             onClick={() => handleCheckBoxCheck(topping)}

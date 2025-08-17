@@ -43,3 +43,11 @@ export interface Product {
     image: string;
     isPublished: string;
 }
+
+export type Topping = {
+    _id: string;
+    name: string;
+    price: number;
+    image: string;
+    isAvailable: boolean;
+}
