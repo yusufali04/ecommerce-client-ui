@@ -20,6 +20,10 @@ type ChosenConfig = {
 }
 
 const ProductModal = ({ product }: { product: Product }) => {
+    const toppingsQueryData = {
+        tenantId: product.tenantId,
+        categoryId: product.category._id
+    }
     const dispatch = useAppDispatch();
     const defaultConfiguration = Object.entries(product.category.priceConfiguration).map(([key, value]) => {
         return { [key]: value.availableOptions[0] }
@@ -102,10 +106,12 @@ const ProductModal = ({ product }: { product: Product }) => {
                                 </div>
                             })
                         }
-                        <Suspense fallback={"Loading toppings"}>
-                            <ToppingList selectedToppings={selectedToppings} handleCheckBoxCheck={handleCheckBoxCheck} />
-                        </Suspense>
-
+                        {
+                            // make this dynamic by adding a hasToppings flag in the database for each category
+                            <Suspense fallback={"Loading toppings"}>
+                                <ToppingList queryData={toppingsQueryData} selectedToppings={selectedToppings} handleCheckBoxCheck={handleCheckBoxCheck} />
+                            </Suspense>
+                        }
                         <div className='flex items-center justify-between mt-12'>
                             <span className='font-bold'>&#8377;{totalPrice}</span>
                             <Button onClick={handleAddToCart}><ShoppingCart /> <span>Add to cart</span></Button>
