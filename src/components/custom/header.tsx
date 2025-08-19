@@ -7,7 +7,6 @@ import { Tenant } from '@/lib/types'
 import CartCounter from './cart-counter'
 
 const Header = async () => {
-    console.log("rendering...");
     const tenantsResponse = await fetch(`${process.env.BACKEND_URL}/api/auth/tenants?perPage=100`, {
         next: {
             revalidate: 3600 // cache for 1 hour

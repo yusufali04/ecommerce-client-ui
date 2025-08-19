@@ -24,7 +24,6 @@ const ProductList = async () => {
         categoryResponse.json() as Promise<Category[]>,
         productsResponse.json() as Promise<{ data: Product[] }>
     ]);
-    console.log(products);
     return (
         <section>
             <div className="container mx-auto max-w-screen-lg py-12">

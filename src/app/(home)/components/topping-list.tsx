@@ -3,7 +3,7 @@ import ToppingCard from './topping-card'
 import { Topping } from '@/lib/types'
 
 
-const ToppingList = () => {
+const ToppingList = ({ selectedToppings, handleCheckBoxCheck }: { selectedToppings: Topping[], handleCheckBoxCheck: (topping: Topping) => void }) => {
     const [toppings, setToppings] = useState<Topping[]>([])
     useEffect(() => {
         const fetchData = async () => {
@@ -16,16 +16,7 @@ const ToppingList = () => {
         }
         fetchData();
     }, [])
-    const [selectedToppings, setSelectedToppings] = useState<Topping[]>([])
 
-    const handleCheckBoxCheck = (topping: Topping) => {
-        const isAlreadyExists = selectedToppings.some((element: Topping) => element._id === topping._id)
-        if (isAlreadyExists) {
-            setSelectedToppings((prev) => prev.filter((elm: Topping) => elm._id !== topping._id));
-            return;
-        }
-        setSelectedToppings((prev) => [...prev, topping])
-    }
     return (
         <section className='mt-6'>
             <h4 className='text-sm'>Extra toppings</h4>
