@@ -12,15 +12,25 @@ import ToppingList from './topping-list';
 import { ShoppingCart } from 'lucide-react';
 import Image from 'next/image';
 import { Product, Topping } from '@/lib/types';
+import { useAppDispatch } from '@/lib/store/hooks';
+import { addToCart } from '@/lib/store/features/cart/cartSlice';
 
 type ChosenConfig = {
     [key: string]: string;
 }
 
 const ProductModal = ({ product }: { product: Product }) => {
+    const dispatch = useAppDispatch();
     const [chosenConfig, setChosenConfig] = useState<ChosenConfig>();
     const handleAddToCart = () => {
-        console.log("Adding to cart");
+        const itemToAdd = {
+            product: product,
+            chosenConfiguration: {
+                priceConfiguration: chosenConfig!,
+                selectedToppings: selectedToppings
+            }
+        }
+        dispatch(addToCart(itemToAdd))
     }
     const handleRadioChange = (key: string, data: string) => {
         setChosenConfig((prev) => {
