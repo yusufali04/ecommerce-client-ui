@@ -1,5 +1,5 @@
 'use client'
-import React, { Suspense, useState } from 'react'
+import React, { Suspense, useMemo, useState } from 'react'
 import { Button } from '@/components/ui/button';
 import {
     Dialog,
@@ -41,6 +41,14 @@ const ProductModal = ({ product }: { product: Product }) => {
         })
     }
     const [selectedToppings, setSelectedToppings] = useState<Topping[]>([])
+    const totalPrice = useMemo(() => {
+        const toppingsTotal = selectedToppings.reduce((acc, curr) => acc + curr.price, 0);
+        const configPrice = Object.entries(chosenConfig).reduce((acc, [key, value]: [string, string]) => {
+            const price = product.priceConfiguration[key].availableOptions[value]
+            return acc + price
+        }, 0)
+        return configPrice + toppingsTotal;
+    }, [chosenConfig, selectedToppings, product])
 
     const handleCheckBoxCheck = (topping: Topping) => {
         const isAlreadyExists = selectedToppings.some((element: Topping) => element._id === topping._id)
@@ -99,7 +107,7 @@ const ProductModal = ({ product }: { product: Product }) => {
                         </Suspense>
 
                         <div className='flex items-center justify-between mt-12'>
-                            <span className='font-bold'>&#8377;400</span>
+                            <span className='font-bold'>&#8377;{totalPrice}</span>
                             <Button onClick={handleAddToCart}><ShoppingCart /> <span>Add to cart</span></Button>
                         </div>
                     </div>
