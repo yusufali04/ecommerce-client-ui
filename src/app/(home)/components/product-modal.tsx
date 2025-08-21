@@ -9,15 +9,28 @@ import {
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import ToppingList from './topping-list';
-import { ShoppingCart } from 'lucide-react';
+import { CircleCheck, ShoppingCart } from 'lucide-react';
 import Image from 'next/image';
 import { Product, Topping } from '@/lib/types';
 import { useAppDispatch, useAppSelector } from '@/lib/store/hooks';
 import { addToCart, CartItem } from '@/lib/store/features/cart/cartSlice';
 import { hashTheItem } from '@/lib/utils';
+import { toast } from "sonner";
 
 type ChosenConfig = {
     [key: string]: string;
+}
+
+const SuccessToast = () => {
+    return (
+        <>
+            <div className='flex items-center gap-2'>
+                <CircleCheck className='text-green-700' />
+                <span className='font-bold'>Added to cart</span>
+            </div>
+
+        </>
+    )
 }
 
 const ProductModal = ({ product }: { product: Product }) => {
@@ -47,6 +60,7 @@ const ProductModal = ({ product }: { product: Product }) => {
         }
         dispatch(addToCart(itemToAdd))
         setDialogOpen(false);
+        toast(<SuccessToast />)
         setSelectedToppings([]);
     }
     const handleRadioChange = (key: string, data: string) => {
