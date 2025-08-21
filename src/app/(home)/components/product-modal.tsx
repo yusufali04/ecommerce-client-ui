@@ -46,7 +46,8 @@ const ProductModal = ({ product }: { product: Product }) => {
             qty: 1,
         }
         dispatch(addToCart(itemToAdd))
-        setDialogOpen(false)
+        setDialogOpen(false);
+        setSelectedToppings([]);
     }
     const handleRadioChange = (key: string, data: string) => {
         setChosenConfig((prev) => {
