@@ -5,6 +5,7 @@ import React, { Suspense } from 'react'
 import { Product } from '@/lib/types';
 import ProductModal from './product-modal';
 import { ProductCardSkeleton } from './skeleton';
+import { getFromPrice } from '@/lib/utils';
 
 type PropType = {
     product: Product
@@ -25,7 +26,7 @@ const ProductCard = ({ product }: PropType) => {
             <CardFooter className='flex items-center justify-between'>
                 <p>
                     <span className='text-sm'>From </span>
-                    <span className='font-bold text-sm'>₹{100}</span>
+                    <span className='font-bold text-sm'>₹{getFromPrice(product as Product)}</span>
                 </p>
                 <ProductModal product={product} />
             </CardFooter>
