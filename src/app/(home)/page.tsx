@@ -4,7 +4,7 @@ import ProductList from "./components/product-list";
 import { Suspense } from "react";
 import { ProductCardSkeleton } from "./components/skeleton";
 
-export default async function Home() {
+export default async function Home({ searchParams }: { searchParams: { restaurant: string } }) {
 
 
   return (
@@ -29,7 +29,7 @@ export default async function Home() {
         </div>
       </section>
       <Suspense fallback={<ProductCardSkeleton />}>
-        <ProductList />
+        <ProductList searchParams={searchParams} />
       </Suspense>
     </>
   );
