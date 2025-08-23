@@ -29,7 +29,6 @@ export function getItemTotal(product: CartItem) {
     (acc, curr) => acc + curr.price,
     0
   );
-
   const configPricing = Object.entries(product.chosenConfiguration.priceConfiguration).reduce(
     (acc, [key, value]: [string, string]) => {
       const price = product.priceConfiguration[key].availableOptions[value];

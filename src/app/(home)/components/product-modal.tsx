@@ -16,6 +16,7 @@ import { useAppDispatch, useAppSelector } from '@/lib/store/hooks';
 import { addToCart, CartItem } from '@/lib/store/features/cart/cartSlice';
 import { hashTheItem } from '@/lib/utils';
 import { toast } from "sonner";
+import { useTotal } from '@/lib/hooks/useTotal';
 
 type ChosenConfig = {
     [key: string]: string;
