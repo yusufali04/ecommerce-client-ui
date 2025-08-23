@@ -1,10 +1,8 @@
 import React from 'react'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select'
 import Link from 'next/link'
-import { Phone, ShoppingBasket } from 'lucide-react'
+import { Phone } from 'lucide-react'
 import { Button } from '../ui/button'
 import { Tenant } from '@/lib/types'
-import CartCounter from './cart-counter'
 import dynamic from 'next/dynamic'
 import TenantSelect from './tenant-select'
 
