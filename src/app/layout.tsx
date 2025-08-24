@@ -6,6 +6,7 @@ import Header from "@/components/custom/header";
 import StoreProvider from "./StoreProvider";
 import { Toaster } from "@/components/ui/sonner";
 import { CircleCheck } from "lucide-react";
+import TokenRefresher from "@/components/custom/token-refresher";
 
 const manrope = Manrope({ subsets: ['latin'], variable: "--font-manrope" })
 
@@ -23,9 +24,12 @@ export default function RootLayout({
     <html lang="en">
       <StoreProvider>
         <body className={cn("min-h-screen bg-background font-manrope antialiased", manrope.variable)}>
-          <Header />
-          <main>{children}</main>
-          <Toaster closeButton={true} position="top-center" />
+          <TokenRefresher>
+            <Header />
+            <main>{children}</main>
+            <Toaster closeButton={true} position="top-center" />
+          </TokenRefresher>
+
         </body>
       </StoreProvider>
 
