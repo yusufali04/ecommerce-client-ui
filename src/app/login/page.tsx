@@ -6,8 +6,7 @@ import login from '@/lib/actions/login';
 import { LoaderCircle } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useFormState, useFormStatus } from 'react-dom';
 
 const SubmitButton = () => {
@@ -21,9 +20,8 @@ const initialState = {
 };
 const Login = () => {
     const [state, formAction] = useFormState(login, initialState);
-    const router = useRouter()
     if (state.type === 'success') {
-        router.push('/');
+        window.location.href = '/';
     }
     return (
         <div className="h-[calc(100vh-75px)] w-full lg:grid lg:grid-cols-2">

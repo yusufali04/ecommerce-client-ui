@@ -29,7 +29,6 @@ export default function RootLayout({
             <main>{children}</main>
             <Toaster closeButton={true} position="top-center" />
           </TokenRefresher>
-
         </body>
       </StoreProvider>
 
