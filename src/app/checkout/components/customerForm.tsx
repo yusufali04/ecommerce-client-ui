@@ -11,6 +11,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
 import OrderSummary from './orderSummary';
+import AddAdress from './addAddress';
 
 
 const formSchema = z.object({
@@ -69,6 +70,7 @@ const CustomerForm = () => {
                                     <div>
                                         <div className="flex items-center justify-between">
                                             <Label htmlFor="name">Address</Label>
+                                            <AddAdress />
                                         </div>
 
                                         <FormField
