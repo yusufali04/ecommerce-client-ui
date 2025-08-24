@@ -6,7 +6,8 @@ import login from '@/lib/actions/login';
 import { LoaderCircle } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import React from 'react'
+import { useRouter } from 'next/navigation';
+import React, { useEffect } from 'react'
 import { useFormState, useFormStatus } from 'react-dom';
 
 const SubmitButton = () => {
@@ -19,17 +20,17 @@ const initialState = {
     message: ''
 };
 const Login = () => {
-
     const [state, formAction] = useFormState(login, initialState);
+    const router = useRouter()
+    if (state.type === 'success') {
+        router.push('/');
+    }
     return (
-        <div className="max-h-[calc(100vh-64px)] w-full lg:grid lg:grid-cols-2">
+        <div className="h-[calc(100vh-75px)] w-full lg:grid lg:grid-cols-2">
             <div className="flex items-center justify-center py-12">
                 <div className="mx-auto grid w-[350px] gap-6">
                     <div className="grid gap-2 text-center">
                         <h1 className="text-3xl font-bold">Login</h1>
-                        <p className="text-balance text-muted-foreground">
-                            Enter your email below to login to your account
-                        </p>
                     </div>
                     <form action={formAction}>
                         <div className="grid gap-4">
@@ -54,6 +55,9 @@ const Login = () => {
                                 </div>
                                 <Input id="password" name="password" type="password" required />
                             </div>
+                            {
+                                state.type === 'error' ? <p aria-live='polite' className={'text-red-500 text-sm'}>{state.message}</p> : null
+                            }
                             <SubmitButton />
                         </div>
                     </form>
@@ -65,14 +69,13 @@ const Login = () => {
                     </div>
                 </div>
             </div>
-            <div className="hidden bg-muted lg:block">
+            <div className="bg-muted lg:block overflow-hidden">
                 <Image
                     src="/login-image.webp"
                     width={1920}
                     height={1080}
-                    style={{ objectFit: 'cover' }}
                     alt="Image"
-                    className="h-screen"
+                    className="h-full w-full object-cover"
                 />
             </div>
         </div>

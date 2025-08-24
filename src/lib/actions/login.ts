@@ -21,7 +21,7 @@ export default async function login(prevState: any, formData: FormData) {
             const error = await response.json();
             return {
                 type: 'error',
-                message: error.errors[0].message
+                message: error.errors[0].msg
             }
         }
         const c = response.headers.getSetCookie();
@@ -53,6 +53,10 @@ export default async function login(prevState: any, formData: FormData) {
             domain: parsedRefreshToken.Domain,
             sameSite: parsedRefreshToken.SameSite as 'strict'
         })
+        return {
+            type: 'success',
+            message: 'Login successful'
+        }
     } catch (err: any) {
         return {
             type: 'error',
