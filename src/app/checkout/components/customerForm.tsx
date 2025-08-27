@@ -13,7 +13,6 @@ import { Form, FormControl, FormField, FormItem, FormMessage } from '@/component
 import OrderSummary from './orderSummary';
 import AddAdress from './addAddress';
 
-
 const formSchema = z.object({
     address: z.string().nonempty("Please select an address."),
     paymentMode: z.enum(["card", "cash"]).refine((val) => val, {
@@ -21,9 +20,6 @@ const formSchema = z.object({
     }),
     comment: z.any(),
 });
-
-
-
 
 const CustomerForm = () => {
     const customerForm = useForm<z.infer<typeof formSchema>>({
