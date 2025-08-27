@@ -14,6 +14,7 @@ import OrderSummary from './orderSummary';
 import AddAdress from './addAddress';
 import { useQuery } from '@tanstack/react-query';
 import { getCustomer } from '@/lib/http/api';
+import { Address, Customer } from '@/lib/types';
 
 const formSchema = z.object({
     address: z.string().nonempty("Please select an address."),
@@ -24,7 +25,7 @@ const formSchema = z.object({
 });
 
 const CustomerForm = () => {
-    const { data: customer, isLoading } = useQuery({
+    const { data: customer, isLoading } = useQuery<Customer>({
         queryKey: ['customer'],
         queryFn: async () => {
             return await getCustomer().then((res) => res.data);
@@ -93,30 +94,25 @@ const CustomerForm = () => {
                                                             <RadioGroup
                                                                 onValueChange={field.onChange}
                                                                 className="grid grid-cols-2 gap-6 mt-2">
-                                                                <Card
-                                                                    className="p-6">
-                                                                    <div className="flex items-center space-x-2">
-                                                                        <FormControl>
-                                                                            <RadioGroupItem
-                                                                                value={
-                                                                                    "Asar Street"
-                                                                                }
-                                                                                id={
-                                                                                    "Asar Street"
-                                                                                }
-                                                                            />
-                                                                        </FormControl>
-                                                                        <Label
-                                                                            htmlFor={
-                                                                                "Asar Street"
-                                                                            }
-                                                                            className="leading-normal">
-                                                                            {
-                                                                                "Asar Street"
-                                                                            }
-                                                                        </Label>
-                                                                    </div>
-                                                                </Card>
+                                                                {
+                                                                    customer?.addresses.map((address) => {
+                                                                        return (
+                                                                            <Card key={address.text}
+                                                                                className="p-6">
+                                                                                <div className="flex items-center space-x-2">
+                                                                                    <FormControl>
+                                                                                        <RadioGroupItem value={address.text} id={address.text} />
+                                                                                    </FormControl>
+                                                                                    <Label htmlFor={address.text} className="leading-normal">
+                                                                                        {
+                                                                                            address.text
+                                                                                        }
+                                                                                    </Label>
+                                                                                </div>
+                                                                            </Card>
+                                                                        );
+                                                                    })
+                                                                }
                                                             </RadioGroup>
                                                         </FormControl>
                                                         <FormMessage />

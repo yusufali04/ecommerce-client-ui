@@ -73,3 +73,18 @@ export interface User {
 export interface Session {
     user: User
 }
+
+export interface Address {
+    text: string;
+    isDefault: boolean;
+}
+
+export interface Customer {
+    _id: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+    userId: string;
+    tenantId: string;
+    addresses: Address[];
+}
