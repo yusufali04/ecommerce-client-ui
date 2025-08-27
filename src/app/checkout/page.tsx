@@ -8,11 +8,11 @@ export default async function Checkout({
     searchParams: { restaurant: string };
 }) {
     const session = await getSession();
-    if (!session) {
-        redirect('/login')
-    }
     const sParams = new URLSearchParams(searchParams);
     const existingQueryString = sParams.toString();
+    if (!session) {
+        redirect(`/login?${existingQueryString}`)
+    }
 
     sParams.append('return-to', `/checkout?${existingQueryString}`);
     return <CustomerForm />;
