@@ -6,6 +6,7 @@ import login from '@/lib/actions/login';
 import { LoaderCircle } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 import React from 'react'
 import { useFormState, useFormStatus } from 'react-dom';
 
@@ -19,9 +20,11 @@ const initialState = {
     message: ''
 };
 const Login = () => {
+    const searchParams = useSearchParams();
+    const returnTo = searchParams.get('return-to') || '/';
     const [state, formAction] = useFormState(login, initialState);
     if (state.type === 'success') {
-        window.location.href = '/';
+        window.location.href = returnTo;
     }
     return (
         <div className="h-[calc(100vh-75px)] w-full lg:grid lg:grid-cols-2">
