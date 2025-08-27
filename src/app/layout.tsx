@@ -5,9 +5,8 @@ import { cn } from "@/lib/utils";
 import Header from "@/components/custom/header";
 import StoreProvider from "./StoreProvider";
 import { Toaster } from "@/components/ui/sonner";
-import { CircleCheck } from "lucide-react";
 import TokenRefresher from "@/components/custom/token-refresher";
-import QueryProvider from "./queryProvider";
+import QueryProvider from "./QueryProvider";
 
 const manrope = Manrope({ subsets: ['latin'], variable: "--font-manrope" })
 

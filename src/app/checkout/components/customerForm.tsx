@@ -12,6 +12,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
 import OrderSummary from './orderSummary';
 import AddAdress from './addAddress';
+import { useQuery } from '@tanstack/react-query';
+import { getCustomer } from '@/lib/http/api';
 
 const formSchema = z.object({
     address: z.string().nonempty("Please select an address."),
@@ -22,9 +24,19 @@ const formSchema = z.object({
 });
 
 const CustomerForm = () => {
+    const { data: customer, isLoading } = useQuery({
+        queryKey: ['customer'],
+        queryFn: async () => {
+            return await getCustomer().then((res) => res.data);
+        }
+    });
+
     const customerForm = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
     });
+    if (isLoading) {
+        return <div className='max-w-screen-lg mx-auto mt-16'>Loading...</div>;
+    }
     return (
         <Form {...customerForm}>
             <form>
@@ -41,6 +53,7 @@ const CustomerForm = () => {
                                         id="fname"
                                         type="text"
                                         className="w-full"
+                                        defaultValue={customer?.firstName}
                                         disabled
                                     />
                                 </div>
@@ -50,6 +63,7 @@ const CustomerForm = () => {
                                         id="lname"
                                         type="text"
                                         className="w-full"
+                                        defaultValue={customer?.lastName}
                                         disabled
                                     />
                                 </div>
@@ -59,6 +73,7 @@ const CustomerForm = () => {
                                         id="email"
                                         type="text"
                                         className="w-full"
+                                        defaultValue={customer?.email}
                                         disabled
                                     />
                                 </div>
