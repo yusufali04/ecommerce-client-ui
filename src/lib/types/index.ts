@@ -88,3 +88,8 @@ export interface Customer {
     tenantId: string;
     addresses: Address[];
 }
+
+export interface VerifyCouponData {
+    code: string;
+    tenantId: string;
+}

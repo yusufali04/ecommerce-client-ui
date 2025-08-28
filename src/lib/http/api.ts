@@ -1,4 +1,5 @@
 import axios from "axios";
+import { VerifyCouponData } from "../types";
 
 export const api = axios.create({
     baseURL: process.env.NEXT_PUBLIC_BACKEND_URL,
@@ -11,3 +12,4 @@ export const api = axios.create({
 const ORDER_SERVICE_PREFIX = '/api/order'
 export const getCustomer = () => api.get(`${ORDER_SERVICE_PREFIX}/customer`)
 export const addAddress = (customerId: string, address: string) => api.patch(`${ORDER_SERVICE_PREFIX}/customer/addresses/${customerId}`, { address })
+export const verifyCoupon = (data: VerifyCouponData) => api.post(`${ORDER_SERVICE_PREFIX}/coupons/verify`, data)
