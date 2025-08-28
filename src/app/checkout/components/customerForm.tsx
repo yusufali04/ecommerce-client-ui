@@ -1,20 +1,21 @@
 'use client';
 import React from 'react';
+import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { Coins, CreditCard } from 'lucide-react';
+import { useQuery } from '@tanstack/react-query';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Textarea } from '@/components/ui/textarea';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
 import OrderSummary from './orderSummary';
 import AddAdress from './addAddress';
-import { useQuery } from '@tanstack/react-query';
+
 import { getCustomer } from '@/lib/http/api';
-import { Address, Customer } from '@/lib/types';
+import { Customer } from '@/lib/types';
 
 const formSchema = z.object({
     address: z.string().nonempty("Please select an address."),
@@ -41,9 +42,12 @@ const CustomerForm = () => {
     if (!customer) {
         return <div className='max-w-screen-lg mx-auto mt-16'>Unable to get customer details</div>
     }
+    const handlePlaceOrder = async (data: z.infer<typeof formSchema>) => {
+        console.log(data);
+    }
     return (
         <Form {...customerForm}>
-            <form>
+            <form onSubmit={customerForm.handleSubmit(handlePlaceOrder)}>
                 <div className="flex container max-w-screen-lg mx-auto gap-6 mt-16">
                     <Card className="w-3/5 border-none">
                         <CardHeader>
@@ -90,6 +94,7 @@ const CustomerForm = () => {
 
                                         <FormField
                                             name="address"
+                                            control={customerForm.control}
                                             render={({ field }) => {
                                                 return (
                                                     <FormItem>
@@ -129,6 +134,7 @@ const CustomerForm = () => {
                                     <Label>Payment Mode</Label>
                                     <FormField
                                         name="paymentMode"
+                                        control={customerForm.control}
                                         render={({ field }) => {
                                             return (
                                                 <FormItem>
@@ -184,6 +190,7 @@ const CustomerForm = () => {
                                     <Label htmlFor="fname">Comment</Label>
                                     <FormField
                                         name="comment"
+                                        control={customerForm.control}
                                         render={({ field }) => {
                                             return (
                                                 <FormItem>

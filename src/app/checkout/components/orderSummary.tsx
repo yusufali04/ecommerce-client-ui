@@ -45,13 +45,13 @@ const OrderSummary = () => {
                         placeholder="Coupon code"
                     />
                     {/* todo: add loading */}
-                    <Button variant={'outline'}>
+                    <Button type='button' variant={'outline'}>
                         Apply
                     </Button>
                 </div>
 
                 <div className="text-right mt-6">
-                    <Button>
+                    <Button type='submit'>
                         <span>Place order</span>
                     </Button>
                 </div>
