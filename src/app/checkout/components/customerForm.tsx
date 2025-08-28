@@ -36,7 +36,10 @@ const CustomerForm = () => {
         resolver: zodResolver(formSchema),
     });
     if (isLoading) {
-        return <div className='max-w-screen-lg mx-auto mt-16'>Loading...</div>;
+        return <div className='max-w-screen-lg mx-auto mt-16'>Loading...</div>
+    }
+    if (!customer) {
+        return <div className='max-w-screen-lg mx-auto mt-16'>Unable to get customer details</div>
     }
     return (
         <Form {...customerForm}>
@@ -54,7 +57,7 @@ const CustomerForm = () => {
                                         id="fname"
                                         type="text"
                                         className="w-full"
-                                        defaultValue={customer?.firstName}
+                                        defaultValue={customer.firstName}
                                         disabled
                                     />
                                 </div>
@@ -64,7 +67,7 @@ const CustomerForm = () => {
                                         id="lname"
                                         type="text"
                                         className="w-full"
-                                        defaultValue={customer?.lastName}
+                                        defaultValue={customer.lastName}
                                         disabled
                                     />
                                 </div>
@@ -74,7 +77,7 @@ const CustomerForm = () => {
                                         id="email"
                                         type="text"
                                         className="w-full"
-                                        defaultValue={customer?.email}
+                                        defaultValue={customer.email}
                                         disabled
                                     />
                                 </div>
@@ -82,7 +85,7 @@ const CustomerForm = () => {
                                     <div>
                                         <div className="flex items-center justify-between">
                                             <Label htmlFor="name">Address</Label>
-                                            <AddAdress />
+                                            <AddAdress customerId={customer._id} />
                                         </div>
 
                                         <FormField

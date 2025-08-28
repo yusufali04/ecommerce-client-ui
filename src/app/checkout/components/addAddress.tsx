@@ -1,4 +1,4 @@
-import { LoaderCircle, Plus } from 'lucide-react';
+import { Cross, CrossIcon, LoaderCircle, Plus } from 'lucide-react';
 import React, { useState } from 'react';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
@@ -17,6 +17,8 @@ import {
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
+import { QueryClient, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { addAddress } from '@/lib/http/api';
 
 const formSchema = z.object({
     address: z.string().min(2, {
@@ -24,14 +26,26 @@ const formSchema = z.object({
     }),
 });
 
-const AddAdress = () => {
+const AddAdress = ({ customerId }: { customerId: string }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
-
+    const queryClient = useQueryClient();
     const addressForm = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
     });
-
-    // todo: Display error if any (useMutation -> isError)
+    const { mutate, isPending, isError } = useMutation({
+        mutationKey: ['address', customerId],
+        mutationFn: async (address: string) => {
+            return await addAddress(customerId, address)
+        },
+        onSuccess: () => {
+            addressForm.reset();
+            setIsModalOpen(false);
+            return queryClient.invalidateQueries({ queryKey: ['customer'] });
+        }
+    })
+    const handleAddAddress = async (data: z.infer<typeof formSchema>) => {
+        await mutate(data.address);
+    }
     return (
         <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
             <DialogTrigger asChild>
@@ -42,11 +56,11 @@ const AddAdress = () => {
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
                 <Form {...addressForm}>
-                    <form>
+                    <form onSubmit={addressForm.handleSubmit(handleAddAddress)}>
                         <DialogHeader>
                             <DialogTitle>Add Address</DialogTitle>
                             <DialogDescription>
-                                We can save your address for next time order.
+                                Your address will be saved for your next order.
                             </DialogDescription>
                         </DialogHeader>
                         <div className="grid gap-4 py-4">
@@ -69,8 +83,16 @@ const AddAdress = () => {
                             </div>
                         </div>
                         <DialogFooter>
-                            <Button type="submit">
-                                Save changes
+                            {isError && <p className='text-sm text-red-600'>Something went wrong. Please try again later.</p>}
+                            <Button type="submit" disabled={isPending}>
+                                {
+                                    isPending ? (
+                                        <>
+                                            <LoaderCircle className="animate-spin" />
+                                            <span>Saving...</span>
+                                        </>
+                                    ) : "Save changes"
+                                }
                             </Button>
                         </DialogFooter>
                     </form>
