@@ -42,8 +42,11 @@ const AddAdress = ({ customerId }: { customerId: string }) => {
             return queryClient.invalidateQueries({ queryKey: ['customer'] });
         }
     })
-    const handleAddAddress = async (data: z.infer<typeof formSchema>) => {
-        await mutate(data.address);
+    const handleAddAddress = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.stopPropagation(); // Prevent the event from bubbling up to the parent form
+        return addressForm.handleSubmit((data: z.infer<typeof formSchema>) => {
+            mutate(data.address);
+        })(e);
     }
     return (
         <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
@@ -55,7 +58,7 @@ const AddAdress = ({ customerId }: { customerId: string }) => {
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
                 <Form {...addressForm}>
-                    <form onSubmit={addressForm.handleSubmit(handleAddAddress)}>
+                    <form onSubmit={handleAddAddress}>
                         <DialogHeader>
                             <DialogTitle>Add Address</DialogTitle>
                             <DialogDescription>
