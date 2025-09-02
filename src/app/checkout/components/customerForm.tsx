@@ -52,8 +52,6 @@ const CustomerForm = () => {
             return await createOrder(data, idempotencyKey).then(res => res.data);
         },
         onSuccess: (data: { paymentURL: string | null }) => {
-            console.log(data);
-
             if (data.paymentURL) {
                 window.location.href = data.paymentURL;
             }
