@@ -6,6 +6,7 @@ import { useAppSelector } from '@/lib/store/hooks';
 import { VerifyCouponData } from '@/lib/types';
 import { getItemTotal } from '@/lib/utils';
 import { useMutation } from '@tanstack/react-query';
+import { LoaderCircle } from 'lucide-react';
 import { useSearchParams } from 'next/navigation';
 import React, { useMemo, useRef, useState } from 'react';
 
@@ -13,7 +14,7 @@ import React, { useMemo, useRef, useState } from 'react';
 const TAXES_PERCENTAGE = 18;
 // Store and fetch this from the restaurant database
 const DELIVERY_CHARGES = 50;
-const OrderSummary = ({ handleCouponCodeChange }: { handleCouponCodeChange: (code: string) => void }) => {
+const OrderSummary = ({ handleCouponCodeChange, isPlaceOrderPending }: { handleCouponCodeChange: (code: string) => void, isPlaceOrderPending: boolean }) => {
     const [discountError, setDiscountError] = useState('')
     const searchParams = useSearchParams();
     const couponCodeRef = useRef<HTMLInputElement>(null);
@@ -135,8 +136,15 @@ const OrderSummary = ({ handleCouponCodeChange }: { handleCouponCodeChange: (cod
                 </div>
 
                 <div className="text-right mt-6">
-                    <Button type='submit'>
-                        <span>Place order</span>
+                    <Button disabled={isPlaceOrderPending} type='submit'>
+                        {
+                            isPlaceOrderPending
+                                ? (<span className='flex items-center gap-2'>
+                                    <LoaderCircle className='animate-spin' />
+                                    <span>Placing order...</span>
+                                </span>)
+                                : <span>Place order</span>
+                        }
                     </Button>
                 </div>
             </CardContent>

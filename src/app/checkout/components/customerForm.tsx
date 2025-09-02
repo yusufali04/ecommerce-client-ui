@@ -43,7 +43,7 @@ const CustomerForm = () => {
     const customerForm = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
     });
-    const { mutate } = useMutation({
+    const { mutate, isPending: isPlaceOrderPending } = useMutation({
         mutationKey: ['placeOrder'],
         mutationFn: async (data: OrderData) => {
             const idempotencyKey = idempotencyKeyRef.current
@@ -236,7 +236,7 @@ const CustomerForm = () => {
                             </div>
                         </CardContent>
                     </Card>
-                    <OrderSummary handleCouponCodeChange={(code: string) => {
+                    <OrderSummary isPlaceOrderPending={isPlaceOrderPending} handleCouponCodeChange={(code: string) => {
                         chosenCouponCode.current = code;
                     }} />
                 </div>
