@@ -13,7 +13,7 @@ import React, { useMemo, useRef, useState } from 'react';
 const TAXES_PERCENTAGE = 18;
 // Store and fetch this from the restaurant database
 const DELIVERY_CHARGES = 50;
-const OrderSummary = () => {
+const OrderSummary = ({ handleCouponCodeChange }: { handleCouponCodeChange: (code: string) => void }) => {
     const [discountError, setDiscountError] = useState('')
     const searchParams = useSearchParams();
     const couponCodeRef = useRef<HTMLInputElement>(null);
@@ -43,7 +43,7 @@ const OrderSummary = () => {
         return parseFloat((subTotal + taxesAmount + DELIVERY_CHARGES).toFixed(2));
     }, [subTotal, taxesAmount]);
 
-    const { mutate, isError } = useMutation({
+    const { mutate } = useMutation({
         mutationKey: ['couponCode'],
         mutationFn: async () => {
             const tenantId = searchParams.get('restaurant');
@@ -55,9 +55,11 @@ const OrderSummary = () => {
             setDiscountError("")
             if (data.valid) {
                 setDiscountPercentage(data.discount);
+                handleCouponCodeChange(couponCodeRef.current?.value || '');
                 return;
             }
-            setDiscountError("Coupon code expired")
+            setDiscountError("Coupon code expired");
+            handleCouponCodeChange('')
             setDiscountPercentage(0);
             return;
         },
