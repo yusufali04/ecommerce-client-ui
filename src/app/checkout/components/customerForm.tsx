@@ -18,7 +18,8 @@ import AddAdress from './addAddress';
 import { createOrder, getCustomer } from '@/lib/http/api';
 import { Customer, OrderData } from '@/lib/types';
 import { useSearchParams } from 'next/navigation';
-import { useAppSelector } from '@/lib/store/hooks';
+import { useAppDispatch, useAppSelector } from '@/lib/store/hooks';
+import { clearCart } from '@/lib/store/features/cart/cartSlice';
 
 const formSchema = z.object({
     address: z.string().nonempty("Please select an address."),
@@ -29,6 +30,7 @@ const formSchema = z.object({
 });
 
 const CustomerForm = () => {
+    const dispatch = useAppDispatch();
     const cart = useAppSelector((state) => state.cart);
     const searchParams = useSearchParams();
     const chosenCouponCode = React.useRef('');
@@ -55,6 +57,7 @@ const CustomerForm = () => {
             if (data.paymentURL) {
                 window.location.href = data.paymentURL;
             }
+            dispatch(clearCart());
             alert('Order placed successfully');
         },
         retry: 3
