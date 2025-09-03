@@ -6,7 +6,7 @@ import { ArrowLeft, CheckCircle2, CircleX, LayoutDashboard, Store } from 'lucide
 import Link from 'next/link';
 import React from 'react'
 
-const Payment = ({ searchParams }: { searchParams: { success: string, orderId: string } }) => {
+const Payment = ({ searchParams }: { searchParams: { success: string, orderId: string, restaurant: string } }) => {
     const isOrderSuccess = searchParams.success === 'true';
     return (
         <div className='flex flex-col items-center gap-4 w-full mt-10'>
@@ -56,14 +56,14 @@ const Payment = ({ searchParams }: { searchParams: { success: string, orderId: s
             {
                 isOrderSuccess ? (
                     <Button asChild className="mt-6">
-                        <Link href={'/order/131654'}>
+                        <Link href={`/order-status/${searchParams.orderId}?restaurant=${searchParams.restaurant}`}>
                             <ArrowLeft size={20} className='text-white' />
                             <span>Track order</span>
                         </Link>
                     </Button>
                 ) : (
                     <Button asChild className="mt-6">
-                        <Link href={'/checkout'}>
+                        <Link href={`/checkout?restaurant=${searchParams.restaurant}`}>
                             <ArrowLeft size={20} className='text-white' />
                             <span>Try Again</span>
                         </Link>
