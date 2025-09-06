@@ -4,14 +4,27 @@ import OrderStatus from './components/orderStatus'
 import { Separator } from '@/components/ui/separator'
 import { Banknote, Coins, LayoutDashboard } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { cookies } from 'next/headers'
+import { Order } from '@/lib/types'
 
-const SingleOrder = () => {
+const SingleOrder = async ({ params }: { params: { orderId: string } }) => {
+    const response = await fetch(`${process.env.BACKEND_URL}/api/order/orders/${params.orderId}?fields=paymentStatus,paymentMode,address,paymentReferenceId`, {
+        headers: {
+            "Authorization": `Bearer ${cookies().get('accessToken')?.value}`
+        }
+    })
+    if (!response.ok) {
+        throw new Error("Failed to fetch order");
+    }
+    const order: Order = await response.json();
+    console.log(order);
+
     return (
         <div className='flex flex-col gap-6 container max-w-screen-lg mx-auto mt-8'>
             <Card>
                 <CardHeader>
                     <CardTitle>Order Details</CardTitle>
-                    <CardDescription>Track the order status</CardDescription>
+                    <CardDescription>Track the order - {order._id}</CardDescription>
                 </CardHeader>
                 <CardContent>
                     <OrderStatus />
@@ -27,9 +40,9 @@ const SingleOrder = () => {
                     <Separator />
                     <CardContent className="pt-6">
                         <h2 className="font-bold">
-                            Yusuf Ali
+                            {order.customerId.firstName + " " + order.customerId.lastName}
                         </h2>
-                        <p className="mt-2">13-37, Asar Street, Velgode</p>
+                        <p className="mt-2">{order.address}</p>
                     </CardContent>
                 </Card>
 
@@ -43,20 +56,20 @@ const SingleOrder = () => {
                     <CardContent className="pt-6">
                         <div className="flex items-center gap-2">
                             <LayoutDashboard size={20} />
-                            <h2 className="text-base font-medium">Order reference: </h2>
-                            321316516213216
+                            <h2 className="text-base font-medium">{order.paymentReferenceId ? "Order reference: " : "Order reference:"} </h2>
+                            <span>{order.paymentReferenceId ? order.paymentReferenceId : order._id}</span>
                         </div>
 
                         <div className="flex items-center gap-2 mt-2">
                             <Banknote />
                             <h2 className="text-base font-medium">Payment status: </h2>
-                            <span>paid</span>
+                            <span>{order.paymentStatus.charAt(0).toUpperCase() + (order.paymentStatus).slice(1).toLowerCase()}</span>
                         </div>
 
                         <div className="flex items-center gap-2 mt-2">
                             <Coins size={20} />
                             <h2 className="text-base font-medium">Payment method: </h2>
-                            <span>Card</span>
+                            <span>{(order.paymentMode).charAt(0).toUpperCase() + (order.paymentMode).slice(1).toLowerCase()}</span>
                         </div>
 
                         <Button variant={'destructive'} className="mt-6">
