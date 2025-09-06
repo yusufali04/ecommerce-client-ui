@@ -17,7 +17,6 @@ const SingleOrder = async ({ params }: { params: { orderId: string } }) => {
         throw new Error("Failed to fetch order");
     }
     const order: Order = await response.json();
-    console.log(order);
 
     return (
         <div className='flex flex-col gap-6 container max-w-screen-lg mx-auto mt-8'>
