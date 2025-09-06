@@ -1,7 +1,7 @@
 'use client';
 import React from 'react'
 import { Step, StepItem, Stepper, useStepper } from '@/components/stepper';
-import { CheckCheck, FileCheck, Microwave, Package, PackageCheck } from 'lucide-react';
+import { CheckCheck, CookingPot, FileCheck, Microwave, Package, PackageCheck } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import { getSingleOrder } from '@/lib/http/api';
 import { Order } from '@/lib/types';
@@ -9,6 +9,7 @@ import { Order } from '@/lib/types';
 const steps = [
     { label: 'Received', icon: FileCheck, description: 'We are confirming your order' },
     { label: 'Confirmed', icon: Package, description: 'We have started preparing your order' },
+    { label: 'Preparing', icon: CookingPot, description: 'Ready for the pickup' },
     { label: 'Prepared', icon: Microwave, description: 'Ready for the pickup' },
     { label: 'Out for delivery', icon: PackageCheck, description: 'Driver is on the way' },
     { label: 'Delivered', icon: CheckCheck, description: 'Order completed' },
@@ -17,9 +18,10 @@ const steps = [
 const statusMapping = {
     received: 0,
     confirmed: 1,
-    prepared: 2,
-    out_for_delivery: 3,
-    delivered: 4
+    preparing: 2,
+    prepared: 3,
+    out_for_delivery: 4,
+    delivered: 5
 } as { [key: string]: number }
 
 const StepperChanger = ({ orderId }: { orderId: string }) => {
