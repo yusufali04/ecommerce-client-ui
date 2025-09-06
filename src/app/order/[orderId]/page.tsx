@@ -26,7 +26,7 @@ const SingleOrder = async ({ params }: { params: { orderId: string } }) => {
                     <CardDescription>Track the order - {order._id}</CardDescription>
                 </CardHeader>
                 <CardContent>
-                    <OrderStatus />
+                    <OrderStatus orderId={order._id} />
                 </CardContent>
             </Card>
             <div className="flex gap-6">

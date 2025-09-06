@@ -2,6 +2,9 @@
 import React from 'react'
 import { Step, StepItem, Stepper, useStepper } from '@/components/stepper';
 import { CheckCheck, FileCheck, Microwave, Package, PackageCheck } from 'lucide-react';
+import { useQuery } from '@tanstack/react-query';
+import { getSingleOrder } from '@/lib/http/api';
+import { Order } from '@/lib/types';
 
 const steps = [
     { label: 'Received', icon: FileCheck, description: 'We are confirming your order' },
@@ -11,17 +14,35 @@ const steps = [
     { label: 'Delivered', icon: CheckCheck, description: 'Order completed' },
 ] satisfies StepItem[];
 
-const StepperChanger = () => {
-    const { setStep, nextStep } = useStepper();
+const statusMapping = {
+    received: 0,
+    confirmed: 1,
+    prepared: 2,
+    out_for_delivery: 3,
+    delivered: 4
+} as { [key: string]: number }
+
+const StepperChanger = ({ orderId }: { orderId: string }) => {
+    const { setStep } = useStepper();
+    const { data: order } = useQuery<Order>({
+        queryKey: ['order', orderId],
+        queryFn: async () => {
+            const requiredFields = "orderStatus"
+            return await getSingleOrder(orderId, requiredFields).then((res) => res.data);
+        },
+        refetchInterval: 5000
+    })
+
     React.useEffect(() => {
-        setInterval(() => {
-            nextStep()
-        }, 2000)
-    }, [nextStep])
+        if (order) {
+            const currentStep = statusMapping[order!.orderStatus] || 0;
+            setStep(currentStep + 1)
+        }
+    }, [order, setStep])
     return <></>;
 }
 
-const OrderStatus = () => {
+const OrderStatus = ({ orderId }: { orderId: string }) => {
     return (
         <Stepper initialStep={0} steps={steps} variant='circle-alt' className='py-8'>
             {
@@ -29,7 +50,7 @@ const OrderStatus = () => {
                     return <Step key={label} label={label} icon={icon} checkIcon={icon} />
                 })
             }
-            <StepperChanger />
+            <StepperChanger orderId={orderId} />
         </Stepper>
     )
 }

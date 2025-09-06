@@ -12,7 +12,7 @@ const statusVariant: Record<
 > = {
     received: "secondary",
     confirmed: "default",
-    preparing: "destructive",
+    prepared: "destructive",
     ready_for_delivery: "outline",
     out_for_delivery: "secondary",
     delivered: "default",
